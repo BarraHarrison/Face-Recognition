@@ -23,4 +23,9 @@ def __main__():
     capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
+    reference_image = cv2.imread("reference_image.jpg")
+    if reference_image is None:
+        print("Error: Could not load reference_image.jpg")
+        return
+
 
