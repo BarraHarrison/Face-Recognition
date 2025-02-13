@@ -14,7 +14,12 @@ face_match = False
 reference_image = cv2.imread("reference_image.jpg")
 
 def check_face(frame):
-    pass
+    global face_match
+    try:
+        if DeepFace.verify([frame, reference_image.copy()]):
+            pass
+    except ValueError:
+        pass
 
 while True:
     ret, frame = capture_object.read()
@@ -32,6 +37,8 @@ while True:
             cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
         else:
             cv2.putText(frame, "NO MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+
+        cv2.imshow("Result", frame)
     
     key = cv2.waitKey(1)
     if key == ord("q"):
