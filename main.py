@@ -14,9 +14,10 @@ def verify_face(frame, reference_image, result_container):
     result_container updated with Boolean result.
     """
     try:
-        pass
+        verification = DeepFace.verify(frame, reference_image)["verified"]
+        result_container["face_match"] = verification
     except ValueError:
-        pass
+        result_container["face_match"] = False
 
 # while True:
 #     ret, frame = capture_object.read()
