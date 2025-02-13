@@ -50,3 +50,8 @@ def __main__():
                 cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
             else:
                 cv2.putText(frame, "NO MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+
+            cv2.imshow("Result", frame)
+
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
