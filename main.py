@@ -27,5 +27,23 @@ def __main__():
     if reference_image is None:
         print("Error: Could not load reference_image.jpg")
         return
+    
+    result_container = {"face_match": False}
 
+    counter = 0
 
+    try:
+        while True:
+            ret, frame = capture_object.read()
+            if not ret:
+                print("Error: Failed to read from capture device.")
+                break
+
+            if counter % 30 == 0:
+                frame_copy = frame.copy()
+                thread = threading.Thread(
+                    target=verify_face,
+                    args=(frame_copy, reference_image.copy(), result_container),
+                    daemon=True
+                )
+                thread.start()
