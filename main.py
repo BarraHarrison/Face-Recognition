@@ -18,8 +18,10 @@ def check_face(frame):
     try:
         if DeepFace.verify(frame, reference_image.copy())["verified"]:
             face_match = True
+        else:
+            face_match = False
     except ValueError:
-        pass
+        face_match = False
 
 while True:
     ret, frame = capture_object.read()
