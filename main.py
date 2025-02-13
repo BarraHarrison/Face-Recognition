@@ -13,11 +13,16 @@ face_match = False
 
 reference_image = cv2.imread("reference_image.jpg")
 
+def check_face():
+    pass
+
 while True:
     ret, frame = capture_object.read()
     
     if ret:
-        pass
+        if counter % 30 == 0:
+            try:
+                threading.Thread(target=check_face, )
     
     key = cv2.waitKey(1)
     if key == ord("q"):
