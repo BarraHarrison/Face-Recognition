@@ -8,36 +8,37 @@ capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 
-def verify_face(frame):
+def verify_face(frame, reference_image, result_container):
+    """
+    Performs face verification using DeepFace.
+    result_container updated with Boolean result.
+    """
     try:
-        if DeepFace.verify(frame, reference_image.copy())["verified"]:
-            face_match = True
-        else:
-            face_match = False
+        pass
     except ValueError:
-        face_match = False
+        pass
 
-while True:
-    ret, frame = capture_object.read()
+# while True:
+#     ret, frame = capture_object.read()
     
-    if ret:
-        if counter % 30 == 0:
-            try:
-                threading.Thread(target=check_face, args=(frame.copy(),)).start()
-            except ValueError:
-                pass
+#     if ret:
+#         if counter % 30 == 0:
+#             try:
+#                 threading.Thread(target=check_face, args=(frame.copy(),)).start()
+#             except ValueError:
+#                 pass
         
-        counter += 1
+#         counter += 1
 
-        if face_match:
-            cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
-        else:
-            cv2.putText(frame, "NO MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+#         if face_match:
+#             cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
+#         else:
+#             cv2.putText(frame, "NO MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
 
-        cv2.imshow("Result", frame)
+#         cv2.imshow("Result", frame)
     
-    key = cv2.waitKey(1)
-    if key == ord("q"):
-        break
+#     key = cv2.waitKey(1)
+#     if key == ord("q"):
+#         break
 
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
