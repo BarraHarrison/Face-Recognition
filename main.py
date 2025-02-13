@@ -18,7 +18,7 @@ def verify_face(frame, reference_image, result_container):
         result_container["face_match"] = False
 
 
-def __main__():
+def main():
     capture_object = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -55,3 +55,10 @@ def __main__():
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
+
+    finally:
+        capture_object.release()
+        cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
