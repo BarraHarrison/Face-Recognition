@@ -7,14 +7,8 @@ capture_object = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-counter = 0
 
-face_match = False
-
-reference_image = cv2.imread("reference_image.jpg")
-
-def check_face(frame):
-    global face_match
+def verify_face(frame):
     try:
         if DeepFace.verify(frame, reference_image.copy())["verified"]:
             face_match = True
