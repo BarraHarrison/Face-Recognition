@@ -10,3 +10,17 @@ capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 counter = 0
 
 face_match = False
+
+reference_image = cv2.imread("reference_image.jpg")
+
+while True:
+    ret, frame = capture_object.read()
+    
+    if ret:
+        pass
+    
+    key = cv2.waitKey(1)
+    if key == ord("q"):
+        break
+
+cv2.destroyAllWindows()
