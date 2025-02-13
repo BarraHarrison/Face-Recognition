@@ -27,6 +27,9 @@ while True:
                 pass
         
         counter += 1
+
+        if face_match:
+            cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
     
     key = cv2.waitKey(1)
     if key == ord("q"):
