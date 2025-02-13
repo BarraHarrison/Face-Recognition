@@ -22,7 +22,9 @@ while True:
     if ret:
         if counter % 30 == 0:
             try:
-                threading.Thread(target=check_face, )
+                threading.Thread(target=check_face, args=(frame.copy(),)).start()
+            except:
+                pass
     
     key = cv2.waitKey(1)
     if key == ord("q"):
