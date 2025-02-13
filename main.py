@@ -41,9 +41,12 @@ def __main__():
 
             if counter % 30 == 0:
                 frame_copy = frame.copy()
-                thread = threading.Thread(
-                    target=verify_face,
-                    args=(frame_copy, reference_image.copy(), result_container),
-                    daemon=True
-                )
+                thread = threading.Thread(target=verify_face,args=(frame_copy, reference_image.copy(), result_container), daemon=True)
                 thread.start()
+
+            counter += 1
+
+            if result_container["face_match"]:
+                cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
+            else:
+                pass
