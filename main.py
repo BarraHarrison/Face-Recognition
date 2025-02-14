@@ -16,7 +16,7 @@ def verify_face(frame, reference_image, result_container):
 
 
 def main():
-    capture_object = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    capture_object = cv2.VideoCapture(0)
     capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
