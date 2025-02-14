@@ -3,9 +3,6 @@ import threading
 import cv2
 from deepface import DeepFace
 
-
-
-
 def verify_face(frame, reference_image, result_container):
     """
     Performs face verification using DeepFace.
@@ -29,7 +26,6 @@ def main():
         return
     
     result_container = {"face_match": False}
-
     counter = 0
 
     try:
