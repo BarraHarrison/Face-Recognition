@@ -1,7 +1,13 @@
 # Python Program for Face Recognition
 import threading
 import cv2
+import os
 from deepface import DeepFace
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+weights_path = os.path.join(current_dir, 'vgg_face_weights.h5')
+
+DeepFace.build_model("VGG-Face", weights_path=weights_path)
 
 def verify_face(frame, reference_image, result_container):
     """
