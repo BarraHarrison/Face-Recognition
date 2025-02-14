@@ -1,2 +1,3 @@
 venv/
 .DS_Store
+vgg_face_weights.h5
