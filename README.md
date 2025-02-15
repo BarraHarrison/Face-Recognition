@@ -23,7 +23,16 @@ The *main* function orchestrates the entire process:
 
 ## DeepFace Import and Its Role 🌐
 
+- **Import**: *from deepface import DeepFace* brings the powerful DeepFace library into our project.
+
+- **Role**: DeepFace is crucial for this project as it provides pre-trained models for facial recognition, specifically the VGG-Face model which I used for our verification process. It simplifies the complex task of facial recognition by abstracting away the deep learning intricacies, allowing us to focus on application logic.
+
 ## Difficulties with DeepFace Dependency 📥
+One of the significant challenges I encountered was related to the DeepFace dependency, particularly with downloading the *vgg_face_weights.h5* file:
+
+- **Download Issues**: Initially, the automatic download process for the model weights failed multiple times, likely due to network issues or permissions. This caused repeated attempts to download the file, which I observed in the terminal output.
+
+- **Solution**: I resolved this by manually downloading the weights file and placing it in the project directory, ensuring the script could find and load it properly. This workaround was necessary since DeepFace didn't accept custom paths for the weights directly in the function call at the time.
 
 ## End Results 📈
 
