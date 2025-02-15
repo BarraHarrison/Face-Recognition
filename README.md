@@ -36,4 +36,11 @@ One of the significant challenges I encountered was related to the DeepFace depe
 
 ## End Results 📈
 
+- **Recognizes Faces**: When I looked directly into the camera, the system recognized my face and displayed "MATCH!" in green, confirming a successful verification.
+
+- **Handles Profile Views**: However, when I turned my head to the side, the system couldn't match my profile view, which is typical for many face recognition models trained primarily on frontal images. This provides an avenue for future enhancement.
+
+-- **Testing Images**: In the *face_recognition_results* directory, testing images from one up until four were when the program did not function correctly. Testing images from five to seven are examples of how the program was able to recognize and unrecognize my face based on the reference_image.jpg.
+
 ## Conclusion 🎉
+I learned not just about implementing AI in practical applications but also about managing dependencies, handling real-time data, and dealing with the nuances of model performance. While our system works well for direct face recognition, there's room for growth, especially in improving profile recognition.
