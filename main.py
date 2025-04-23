@@ -12,8 +12,12 @@ def verify_face(frame, reference_image, result_container):
     result_container updated with Boolean result.
     """
     try:
-        verification = DeepFace.verify(frame, reference_image)["verified"]
-        result_container["face_match"] = verification
+        for ref_img in reference_image:
+            verification = DeepFace.verify(frame, ref_img, model_name="VGG-Face")["verified"]
+            if verification:
+                result_container["face_match"] = True
+                return
+        result_container["face_match"] = False
     except ValueError:
         result_container["face_match"] = False
 
@@ -23,8 +27,15 @@ def main():
     capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    reference_image = cv2.imread("reference_image.jpg")
-    if reference_image is None:
+    reference_images = [
+        cv2.imread("reference_image.jpg"),
+        cv2.imread("reference_left.jpg"),
+        cv2.imread("reference_right.jpg")
+        ]
+
+    reference_images = [img for img in reference_images if img is not None]
+
+    if not reference_images:
         print("Error: Could not load reference_image.jpg")
         return
     
@@ -40,8 +51,13 @@ def main():
 
             if counter % 30 == 0:
                 frame_copy = frame.copy()
-                thread = threading.Thread(target=verify_face,args=(frame_copy, reference_image.copy(), result_container), daemon=True)
+                thread = threading.Thread(
+                    target=verify_face,
+                    args=(frame_copy, reference_images, result_container),
+                    daemon=True
+                )
                 thread.start()
+
 
             counter += 1
 
