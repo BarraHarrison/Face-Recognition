@@ -47,16 +47,18 @@ def main():
     capture_object.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture_object.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    reference_images = [
-        cv2.imread("reference_image.jpg"),
-        cv2.imread("reference_left.jpg"),
-        cv2.imread("reference_right.jpg")
-        ]
+    reference_paths = ["reference_image.jpg", "reference_left.jpg", "reference_right.jpg"]
+    reference_images = []
 
-    reference_images = [img for img in reference_images if img is not None]
+    for path in reference_paths:
+        img = cv2.imread(path)
+        if img is not None:
+            cropped = detect_and_crop_face(img)
+            if cropped is not None:
+                reference_images.append(cropped)
 
     if not reference_images:
-        print("Error: Could not load reference_image.jpg")
+        print("Error: No valid reference faces found.")
         return
     
     result_container = {"face_match": False}
@@ -66,27 +68,24 @@ def main():
         while True:
             ret, frame = capture_object.read()
             if not ret:
-                print("Error: Failed to read from capture device.")
+                print("Error: Failed to read from webcam.")
                 break
 
             if counter % 30 == 0:
-                frame_copy = frame.copy()
                 thread = threading.Thread(
                     target=verify_face,
-                    args=(frame_copy, reference_images, result_container),
+                    args=(frame.copy(), reference_images, result_container),
                     daemon=True
                 )
                 thread.start()
 
-
             counter += 1
 
-            if result_container["face_match"]:
-                cv2.putText(frame, "MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
-            else:
-                cv2.putText(frame, "NO MATCH!", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+            label = "MATCH" if result_container["face_match"] else "NO MATCH!"
+            color = (0, 255, 0) if result_container["face_match"] else (0, 0, 255)
+            cv2.putText(frame, label, (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, color, 3)
 
-            cv2.imshow("Result", frame)
+            cv2.imshow("Face Recognition", frame)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
