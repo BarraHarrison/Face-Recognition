@@ -2,10 +2,13 @@ import threading
 import cv2
 import os
 from deepface import DeepFace
+import numpy as np 
+import mediapipe as mp
 
 DeepFace.build_model("VGG-Face")
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+mp_face_mesh = mp.solutions.face_mesh
 
 def detect_and_crop_face(image):
     """
@@ -20,6 +23,33 @@ def detect_and_crop_face(image):
     
     x, y, w, h = sorted(faces, key=lambda box: box[2]*box[3], reverse=True)[0]
     return image[y:y+h, x:x+w]
+
+
+def align_face_mediapipe(image):
+    with mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refine_landmarks=True) as face_mesh:
+        results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+        if not results.multi_face_landmarks:
+            return None
+        
+        landmarks = results.multi_face_landmarks[0]
+
+        ih, iw, _ = image.shape
+        left_eye = landmarks.landmark[33]
+        right_eye = landmarks.landmark[263]
+
+        left = np.array([left_eye.x * iw, left_eye.y * ih])
+        right = np.array([right_eye.x * iw, right_eye.y * ih])
+
+        delta = right - left
+        angle = np.degrees(np.arctan2(delta[1], delta[0]))
+
+        center = tuple(((left + right) / 2).astype(int))
+
+        rot_matrix = cv2.getRotationMatrix2D(center, angle, 1.0)
+        aligned_image = cv2.warpAffine(image, rot_matrix, (iw, ih), flags=cv2.INTER_LINEAR)
+
+        return aligned_image
 
 
 def verify_face(frame, reference_images, result_container):
