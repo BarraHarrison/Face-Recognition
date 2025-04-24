@@ -12,10 +12,14 @@ mp_face_mesh = mp.solutions.face_mesh
 
 def detect_and_crop_face(image):
     """
-    Detects and crops the largest face in the image.
-    Returns the cropped face or None.
+    Aligns the face, then detects and crops it
     """
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    aligned_image = align_face_mediapipe(image)
+    if aligned_image is None:
+        return None
+
+    gray = cv2.cvtColor(aligned_image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 
     if len(faces) == 0:
