@@ -7,16 +7,33 @@ DeepFace.build_model("VGG-Face")
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
+def detect_and_crop_face(image):
+    """
+    Detects and crops the largest face in the image.
+    Returns the cropped face or None.
+    """
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    if len(faces) == 0:
+        return None
+    
+    x, y, w, h = sorted(faces, key=lambda box: box[2]*box[3], reverse=True)[0]
+    return image[y:y+h, x:x+w]
 
 
-def verify_face(frame, reference_image, result_container):
+def verify_face(frame, reference_images, result_container):
     """
-    Performs face verification using DeepFace.
-    result_container updated with Boolean result.
+    Crops faces and performs DeepFace verification.
     """
+    frame_face = detect_and_crop_face(frame)
+    if frame_face is None:
+        result_container["face_match"] = False
+        return
+
     try:
-        for ref_img in reference_image:
-            verification = DeepFace.verify(frame, ref_img, model_name="VGG-Face")["verified"]
+        for ref_img in reference_images:
+            verification = DeepFace.verify(frame_face, ref_img, model_name="VGG-Face")["verified"]
             if verification:
                 result_container["face_match"] = True
                 return
