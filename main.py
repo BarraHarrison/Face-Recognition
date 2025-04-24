@@ -1,10 +1,13 @@
-# Python Program for Face Recognition
 import threading
 import cv2
 import os
 from deepface import DeepFace
 
 DeepFace.build_model("VGG-Face")
+
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+
+
 
 def verify_face(frame, reference_image, result_container):
     """
