@@ -48,7 +48,9 @@ def align_face_mediapipe(image):
         delta = right - left
         angle = np.degrees(np.arctan2(delta[1], delta[0]))
 
-        center = tuple(((left + right) / 2).astype(int))
+        center_x = int((left[0] + right[0]) / 2)
+        center_y = int((left[1] + right[1]) / 2)
+        center = (center_x, center_y)
 
         rot_matrix = cv2.getRotationMatrix2D(center, angle, 1.0)
         aligned_image = cv2.warpAffine(image, rot_matrix, (iw, ih), flags=cv2.INTER_LINEAR)
