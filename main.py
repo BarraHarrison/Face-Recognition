@@ -4,11 +4,18 @@ import os
 from deepface import DeepFace
 import numpy as np 
 import mediapipe as mp
+import pyttsx3
 
 DeepFace.build_model("VGG-Face")
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 mp_face_mesh = mp.solutions.face_mesh
+
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
 
 def detect_and_crop_face(image):
     """
@@ -101,6 +108,9 @@ def main():
     counter = 0
 
     try:
+
+        was_matched = False
+
         while True:
             ret, frame = capture_object.read()
             if not ret:
@@ -116,6 +126,13 @@ def main():
                 thread.start()
 
             counter += 1
+
+            match_now = result_container["face_match"]
+
+            if match_now and not was_matched:
+                speak("Access granted")
+
+            was_matched = match_now
 
             label = "MATCH" if result_container["face_match"] else "NO MATCH!"
             color = (0, 255, 0) if result_container["face_match"] else (0, 0, 255)
