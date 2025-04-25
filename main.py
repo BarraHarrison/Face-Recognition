@@ -12,6 +12,10 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_fronta
 mp_face_mesh = mp.solutions.face_mesh
 
 engine = pyttsx3.init()
+engine.setProperty('rate', 120)
+engine.setProperty('volume', 0.8)
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
 
 def speak(text):
     engine.say(text)
@@ -108,9 +112,7 @@ def main():
     counter = 0
 
     try:
-
         was_matched = False
-
         while True:
             ret, frame = capture_object.read()
             if not ret:
