@@ -144,6 +144,8 @@ def main():
 
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = face_mesh.process(frame_rgb)
+            mesh_color = (0, 255, 0) if result_container["face_match"] else (0, 0, 255)
+            dynamic_drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1, color=mesh_color)
 
             if results.multi_face_landmarks:
                 for face_landmarks in results.multi_face_landmarks:
@@ -151,8 +153,8 @@ def main():
                         image=frame,
                         landmark_list=face_landmarks,
                         connections=mp_face_mesh.FACEMESH_TESSELATION,
-                        landmark_drawing_spec=drawing_spec,
-                        connection_drawing_spec=drawing_spec
+                        landmark_drawing_spec=dynamic_drawing_spec,
+                        connection_drawing_spec=dynamic_drawing_spec
                     )
 
             label = "MATCH" if result_container["face_match"] else "NO MATCH!"
