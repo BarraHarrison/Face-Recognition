@@ -17,6 +17,12 @@ engine.setProperty('volume', 0.8)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
 
+mp_face_mesh = mp.solutions.face_mesh
+face_mesh = mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True)
+
+mp_drawing = mp.solutions.drawing_utils
+drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1, color=(0, 255, 0))
+
 def speak(text):
     engine.say(text)
     engine.runAndWait()
@@ -135,6 +141,19 @@ def main():
                 speak("Access granted")
 
             was_matched = match_now
+
+            frame_rgb = cv2.Color(frame, cv2.COLOR_BGR2RGB)
+            results = face_mesh.process(frame_rgb)
+
+            if results.multi_face_landmarks:
+                for face_landmarks in results.multi_face_landmarks:
+                    mp_drawing.draw_landmarks(
+                        image=frame,
+                        landmark_list=face_landmarks,
+                        connections=mp_face_mesh.FACEMESH_TESSELATION,
+                        landmark_drawing_spec=drawing_spec,
+                        connection_drawing_spec=drawing_spec
+                    )
 
             label = "MATCH" if result_container["face_match"] else "NO MATCH!"
             color = (0, 255, 0) if result_container["face_match"] else (0, 0, 255)
