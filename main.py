@@ -142,7 +142,7 @@ def main():
 
             was_matched = match_now
 
-            frame_rgb = cv2.Color(frame, cv2.COLOR_BGR2RGB)
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = face_mesh.process(frame_rgb)
 
             if results.multi_face_landmarks:
